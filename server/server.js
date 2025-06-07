@@ -22,7 +22,11 @@ console.log("REDIRECT_URL:", process.env.REDIRECT_URL);
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin:"https://trade-journal-mauve.vercel.app",
+  credentials:true,
+})
+);
 app.use(express.json());
 
 // MongoDB connection with updated options
