@@ -6,10 +6,12 @@ import User from "../models/User.js";
 const router = express.Router();
 dotenv.config();
 
-const { ANGEL_ONE_API_KEY, REDIRECT_URL, API_SECRET } = process.env;
+const { ANGEL_ONE_API_KEY, REDIRECT_URL, API_SECRET, FRONTEND_REDIRECT_URL } =
+  process.env;
 
 console.log("ANGEL_ONE_API_KEY:", ANGEL_ONE_API_KEY);
 console.log("REDIRECT_URL:", REDIRECT_URL);
+console.log("FRONTEND_REDIRECT_URL:", FRONTEND_REDIRECT_URL);
 
 // 1. Redirect user to Angel One login
 router.get("/angel-one", (req, res) => {
@@ -47,7 +49,8 @@ router.get("/callback", async (req, res) => {
       { upsert: true, new: true }
     );
 
-    res.send("Login successful");
+    // Redirect to frontend with the obtained token
+    res.redirect(`${FRONTEND_REDIRECT_URL}?auth_token=${token}`);
   } catch (error) {
     console.error("Error in login:", error);
     res.status(500).send("Internal server error");

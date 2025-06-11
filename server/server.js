@@ -22,10 +22,14 @@ console.log("REDIRECT_URL:", process.env.REDIRECT_URL);
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin:"https://trade-journal-mauve.vercel.app",
-  credentials:true,
-})
+app.use(
+  cors({
+    origin: [
+      "https://trade-journal-yogendhra009-9633s-projects.vercel.app/",
+      "http://localhost:3000",
+    ],
+    credentials: true,
+  })
 );
 app.use(express.json());
 
