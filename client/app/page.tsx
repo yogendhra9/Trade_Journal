@@ -99,7 +99,10 @@ export default function LandingPage() {
 
         {/* Ticker Tape */}
         <div className="absolute top-20 w-full overflow-hidden bg-black/5 dark:bg-white/5 py-2">
-          <div ref={tickerRef} className="ticker-tape whitespace-nowrap text-sm font-medium">
+          <div
+            ref={tickerRef}
+            className="ticker-tape whitespace-nowrap text-sm font-medium"
+          >
             {stockData.join(" • ")} • {stockData.join(" • ")}
           </div>
         </div>
@@ -116,7 +119,11 @@ export default function LandingPage() {
           <div className="hero-buttons flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {isAuthenticated ? (
               <>
-                <Button size="lg" className="text-lg px-8 py-6" onClick={() => router.push("/dashboard")}>
+                <Button
+                  size="lg"
+                  className="text-lg px-8 py-6"
+                  onClick={() => router.push("/dashboard")}
+                >
                   Go to Dashboard
                 </Button>
                 <Button
@@ -134,7 +141,10 @@ export default function LandingPage() {
                   size="lg"
                   className="text-lg px-8 py-6"
                   onClick={() =>
-                    window.open("https://smartapi.angelbroking.com/publisher-login?api_key=YOUR_API_KEY", "_self")
+                    window.open(
+                      `${process.env.NEXT_PUBLIC_API_URL}/auth/angel-one`,
+                      "_self"
+                    )
                   }
                 >
                   Connect Broker (Angel One)
@@ -175,7 +185,9 @@ export default function LandingPage() {
               <CardContent className="p-6 text-center">
                 <BookOpen className="h-12 w-12 mx-auto mb-4 text-blue-600" />
                 <h3 className="text-xl font-semibold mb-2">Auto Journal</h3>
-                <p className="text-muted-foreground">Every trade logged with AI-generated reasoning.</p>
+                <p className="text-muted-foreground">
+                  Every trade logged with AI-generated reasoning.
+                </p>
               </CardContent>
             </Card>
 
@@ -183,7 +195,9 @@ export default function LandingPage() {
               <CardContent className="p-6 text-center">
                 <Brain className="h-12 w-12 mx-auto mb-4 text-purple-600" />
                 <h3 className="text-xl font-semibold mb-2">Trade via AI</h3>
-                <p className="text-muted-foreground">Talk to AI like 'Buy best stocks under ₹100' — it decides</p>
+                <p className="text-muted-foreground">
+                  Talk to AI like 'Buy best stocks under ₹100' — it decides
+                </p>
               </CardContent>
             </Card>
 
@@ -191,12 +205,14 @@ export default function LandingPage() {
               <CardContent className="p-6 text-center">
                 <BarChart3 className="h-12 w-12 mx-auto mb-4 text-green-600" />
                 <h3 className="text-xl font-semibold mb-2">Smart Analytics</h3>
-                <p className="text-muted-foreground">Real-time portfolio insights and performance tracking</p>
+                <p className="text-muted-foreground">
+                  Real-time portfolio insights and performance tracking
+                </p>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

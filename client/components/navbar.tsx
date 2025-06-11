@@ -39,7 +39,9 @@ export function Navbar() {
               href={item.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                pathname === item.href ? "text-primary" : "text-muted-foreground",
+                pathname === item.href
+                  ? "text-primary"
+                  : "text-muted-foreground"
               )}
             >
               {item.label}
@@ -56,7 +58,10 @@ export function Navbar() {
           ) : (
             <Button
               onClick={() =>
-                window.open("https://smartapi.angelbroking.com/publisher-login?api_key=YOUR_API_KEY", "_self")
+                window.open(
+                  `${process.env.NEXT_PUBLIC_API_URL}/auth/angel-one`,
+                  "_self"
+                )
               }
             >
               Login with Angel One
@@ -67,7 +72,11 @@ export function Navbar() {
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center space-x-2">
           <ThemeToggle />
-          <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
@@ -83,7 +92,9 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   "block px-3 py-2 text-sm font-medium transition-colors hover:text-primary",
-                  pathname === item.href ? "text-primary" : "text-muted-foreground",
+                  pathname === item.href
+                    ? "text-primary"
+                    : "text-muted-foreground"
                 )}
                 onClick={() => setIsOpen(false)}
               >
@@ -99,7 +110,10 @@ export function Navbar() {
                 <Button
                   className="w-full"
                   onClick={() =>
-                    window.open("https://smartapi.angelbroking.com/publisher-login?api_key=YOUR_API_KEY", "_self")
+                    window.open(
+                      `${process.env.NEXT_PUBLIC_API_URL}/auth/angel-one`,
+                      "_self"
+                    )
                   }
                 >
                   Login with Angel One
@@ -110,5 +124,5 @@ export function Navbar() {
         </div>
       )}
     </nav>
-  )
+  );
 }
