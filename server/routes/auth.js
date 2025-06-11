@@ -10,31 +10,37 @@ const {
   ANGEL_ONE_API_KEY,
   REDIRECT_URL,
   API_SECRET,
-  FRONTEND_URL,
+  FRONTEND_REDIRECT_URL,
   CLIENT_CODE,
 } = process.env;
 
 console.log("ANGEL_ONE_API_KEY:", ANGEL_ONE_API_KEY);
 console.log("REDIRECT_URL:", REDIRECT_URL);
-console.log("FRONTEND_URL:", FRONTEND_URL);
+console.log("FRONTEND_REDIRECT_URL:", FRONTEND_REDIRECT_URL);
 console.log("CLIENT_CODE:", CLIENT_CODE);
 
 // 1. Redirect user to Angel One login
 router.get("/angel-one", (req, res) => {
-  const state  = Math.random().toString(36).substring(7);
+  const state = Math.random().toString(36).substring(7);
   req.session.oathstate = state;
-  const url = `https://smartapi.angelbroking.in/publisher-login?api_key=${ANGEL_ONE_API_KEY}&redirect_uri=${REDIRECT_URL}`;
+  const url = `https://smartapi.angelbroking.com/publisher-login?api_key=${ANGEL_ONE_API_KEY}&redirect_uri=${REDIRECT_URL}&state=${state}`;
   res.redirect(url);
 });
 
 // 2. Handle callback from Angel One login
 router.get("/callback", async (req, res) => {
-  const { code,state } = req.query;
-  console.log('Oauth callback recieved:', {code,state});
-  
+  const { code, state } = req.query;
+  console.log("Oauth callback recieved:", { code, state });
 
   try {
-    if(!state  !== req.session.oathstate) return res.status(400).send('invalid state parameter');
+    if (
+      !req.session ||
+      !req.session.oathstate ||
+      state !== req.session.oathstate
+    ) {
+      console.error("Invalid state parameter or session missing");
+      return res.status(400).send("Invalid state parameter or session missing");
+    }
     const response = await axios.post(
       "https://apiconnect.angelbroking.com/rest/auth/angelbroking/user/v1/loginByPassword",
       {

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import authRoutes from "./routes/auth.js";
+import session from "express-session";
 // import { fileURLToPath } from "url";
 
 // const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +21,16 @@ console.log("ANGEL_ONE_API_KEY:", process.env.ANGEL_ONE_API_KEY);
 console.log("REDIRECT_URL:", process.env.REDIRECT_URL);
 
 const app = express();
+
+// Session Middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-super-secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: process.env.NODE_ENV === "production" },
+  })
+);
 
 // Middleware
 app.use(
