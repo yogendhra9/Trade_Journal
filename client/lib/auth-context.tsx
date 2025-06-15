@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
-  login: () => void;
+  login: (clientcode: string, password: string) => void;
   logout: () => void;
   loading: boolean;
 }
@@ -60,8 +60,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = () => {
-    window.location.href = "http://localhost:5000/auth/angel-one";
+  const login = async (clientcode: string, password: string) => {
+    try {
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ clientcode, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        setToken(data.token);
+        setIsAuthenticated(true);
+        localStorage.setItem("auth_token", data.token);
+        router.push("/dashboard"); // Redirect to dashboard or desired authenticated page
+      } else {
+        console.error("Login failed:", data.message);
+        // Optionally, show error message to user
+      }
+    } catch (error) {
+      console.error("Error during login process:", error);
+      // Optionally, show error message to user
+    }
   };
 
   const logout = () => {
