@@ -5,29 +5,38 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/navbar"
 import { Chatbot } from "@/components/chatbot"
+import { AuthProvider } from "@/lib/auth-context";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AI Investment Assistant",
-  description: "Invest Smart with AI - Let AI analyze, decide, execute, and journal your trades.",
-    generator: 'v0.dev'
-}
+  description:
+    "Invest Smart with AI - Let AI analyze, decide, execute, and journal your trades.",
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Chatbot />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Chatbot />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
-  )
+  );
 }

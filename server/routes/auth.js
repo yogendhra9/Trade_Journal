@@ -10,19 +10,21 @@ const {
   ANGEL_ONE_API_KEY,
   REDIRECT_URL,
   API_SECRET,
-  FRONTEND_REDIRECT_URL,
+  FRONTEND_URL,
   CLIENT_CODE,
 } = process.env;
 
 console.log("ANGEL_ONE_API_KEY:", ANGEL_ONE_API_KEY);
 console.log("REDIRECT_URL:", REDIRECT_URL);
-console.log("FRONTEND_REDIRECT_URL:", FRONTEND_REDIRECT_URL);
+console.log("FRONTEND_REDIRECT_URL:", FRONTEND_URL);
 console.log("CLIENT_CODE:", CLIENT_CODE);
 
 // 1. Redirect user to Angel One login
 router.get("/angel-one", (req, res) => {
   const state = Math.random().toString(36).substring(7);
+  console.log(state);
   req.session.oathstate = state;
+  
   const url = `https://smartapi.angelbroking.com/publisher-login?api_key=${ANGEL_ONE_API_KEY}&redirect_uri=${REDIRECT_URL}&state=${state}`;
   res.redirect(url);
 });
@@ -31,6 +33,8 @@ router.get("/angel-one", (req, res) => {
 router.get("/callback", async (req, res) => {
   const { code, state } = req.query;
   console.log("Oauth callback recieved:", { code, state });
+  console.log("req.session:", req.session);
+  console.log("req.session.oathstate:", req.session.oathstate);
 
   try {
     if (
@@ -73,7 +77,7 @@ router.get("/callback", async (req, res) => {
     );
 
     // Redirect to frontend with the obtained token
-    res.redirect(`${FRONTEND_REDIRECT_URL}?auth_token=${token}`);
+    res.redirect(`${FRONTEND_URL}?auth_token=${token}`);
   } catch (error) {
     console.error("Error in login:", error);
     res.status(500).send("Internal server error");

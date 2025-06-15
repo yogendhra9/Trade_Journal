@@ -8,6 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Menu, X, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/hooks/use-auth"
+import LoginButton from "@/components/auth/login-button";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -16,12 +17,12 @@ const navItems = [
   { href: "/journal", label: "Journal" },
   { href: "/orders", label: "Orders" },
   { href: "/auth/test", label: "Auth Test" }, // Add this line for testing
-]
+];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
-  const { isAuthenticated, logout } = useAuth()
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -56,16 +57,7 @@ export function Navbar() {
               Logout
             </Button>
           ) : (
-            <Button
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_API_URL}/auth/angel-one`,
-                  "_self"
-                )
-              }
-            >
-              Login with Angel One
-            </Button>
+            <LoginButton />
           )}
         </div>
 
@@ -107,17 +99,7 @@ export function Navbar() {
                   Logout
                 </Button>
               ) : (
-                <Button
-                  className="w-full"
-                  onClick={() =>
-                    window.open(
-                      `${process.env.NEXT_PUBLIC_API_URL}/auth/angel-one`,
-                      "_self"
-                    )
-                  }
-                >
-                  Login with Angel One
-                </Button>
+                <LoginButton />
               )}
             </div>
           </div>

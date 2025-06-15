@@ -5,6 +5,7 @@ import cors from "cors";
 import path from "path";
 import authRoutes from "./routes/auth.js";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 // import { fileURLToPath } from "url";
 
 // const __filename = fileURLToPath(import.meta.url);
@@ -28,7 +29,17 @@ app.use(
     secret: process.env.SESSION_SECRET || "your-super-secret-key",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === "production" },
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      sameSite: "lax",
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "trade-journal-tbev.onrender.com"
+          : "localhost",
+    },
+    proxy: true, // Add this line for deployment behind a proxy like Render
   })
 );
 
